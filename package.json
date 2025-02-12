@@ -2,18 +2,25 @@
   "name": "ivs-asc",
   "version": "0.1.0",
   "description": "Automatic Stream Configuration for AWS IVS",
+  "author": "Antti Ala-Ilkka <antti@instereo.fi>",
+  "license": "MIT",
   "main": "index.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "tsc",
+    "clean": "rm -R ./build/"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/anttiai/ivs-asc.git"
   },
-  "author": "Antti Ala-Ilkka <antti@instereo.fi>",
-  "license": "MIT",
   "bugs": {
     "url": "https://github.com/anttiai/ivs-asc/issues"
   },
-  "homepage": "https://github.com/anttiai/ivs-asc#readme"
+  "homepage": "https://github.com/anttiai/ivs-asc#readme",
+  "devDependencies": {
+    "typescript": "^5.7.3"
+  },
+  "dependencies": {
+    "systeminformation": "^5.25.11"
+  }
 }
