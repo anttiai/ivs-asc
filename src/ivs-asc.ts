@@ -1,7 +1,10 @@
-import * as si from 'systeminformation';
 import { FetchOptions } from './types/fetchOptions';
-import { ClientConfiguration } from './types/clientConfiguration';
+import { ClientConfiguration, GpuDescription } from './types/clientConfiguration';
 import { Response } from './types/response';
+import * as si from 'systeminformation';
+import * as util from 'util';
+import * as child_process from 'child_process';
+const exec = util.promisify(child_process.exec);
 
 const SERVICE = 'IVS';
 const SCHEMA_VERSION = '2024-06-04';
@@ -9,12 +12,42 @@ const DEFAULT_API_URL = 'https://ingest.contribute.live-video.net/api/v3/GetClie
 const DEFAULT_MAX_VIDEO_TRACKS = 5;
 const API_CALL_TIMEOUT_MS = 5000;
 
+const GPU_VENDOR_IDS = {
+    Nvidia: 4318,
+}
+
+async function constructGpusArray(): Promise<GpuDescription[]> {
+    const graphics = await si.graphics();
+    let gpuArr: GpuDescription[] = [];
+
+    graphics.controllers.forEach(controller => {
+        const vendorId = controller.vendorId ? parseInt(controller.vendorId, 16) : 0;
+        let gpu: GpuDescription = {
+            device_id: controller.deviceId ? parseInt(controller.deviceId) : 0,
+            driver_version: '',
+            model: controller.model,
+            vendor_id: vendorId
+        };
+
+        // Vendor-specifc heuristic to find out GPU driver version
+        if (vendorId === GPU_VENDOR_IDS.Nvidia) {
+            exec("anvidia-smi --query-gpu=driver_version --format=csv,noheader").then(out => {
+                gpu.driver_version = out.stdout.trim();
+                gpuArr.push(gpu);
+            });
+        }
+        gpuArr.push(gpu);
+    });
+    return gpuArr;
+}
+
 
 export async function getClientConfiguration(options: FetchOptions): Promise<ClientConfiguration> {
 
     const cpu = await si.cpu();
     const mem = await si.mem();
-    const graphics = await si.graphics();
+    const os = await si.osInfo();
+    const gpus: GpuDescription[] = await constructGpusArray();
 
     return {
         "authentication": options.authKey,
@@ -28,24 +61,17 @@ export async function getClientConfiguration(options: FetchOptions): Promise<Cli
                 "name": cpu.manufacturer + " " + cpu.brand
             },
             "gaming_features": {},
-            "gpu": [
-                {
-                    "device_id": 10168,
-                    "model": "AD104GL [L4]",
-                    "vendor_id": 4318,
-                    "driver_version": "565.57.01",
-                }
-            ],
+            "gpu": gpus,
             "memory": {
                 "free": mem.free,
                 "total": mem.total
             },
             "system": {
-                "build": 1,
-                "name": "Ubuntu",
-                "release": "24.04",
-                "revision": "1",
-                "version": "1"
+                "build": parseInt(os.build, 16),
+                "name": os.distro,
+                "release": os.release,
+                "revision": os.release,
+                "version": os.release
             }
         },
         "preferences": {
