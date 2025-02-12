@@ -1,3 +1,2 @@
-build/
-node_modules/
-test.ts
+/dist
+/node_modules

@@ -14,7 +14,7 @@ AWS documentation at [docs.aws.amazon.com](https://docs.aws.amazon.com/ivs/lates
 ## Usage
 Construct stream configuration without sending it to IVS
 ```ts
-import { getClientConfiguration } from "./src/ivs-asc";
+import { getClientConfiguration } from "./src";
 import { FetchOptions } from "./src/types/fetchOptions";
 
 const options: FetchOptions = {
@@ -30,7 +30,7 @@ getClientConfiguration(options).then(console.log);
 
 Fetch optimal streaming configuration from IVS
 ```ts
-import { fetchStreamConfiguration } from "./src/ivs-asc";
+import { fetchStreamConfiguration } from "./src";
 import { FetchOptions } from "./src/types/fetchOptions";
 import { Response } from "./src/types/response";
 
