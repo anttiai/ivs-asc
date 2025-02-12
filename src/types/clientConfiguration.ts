@@ -1,4 +1,4 @@
-interface GpuDescription {
+export interface GpuDescription {
     dedicated_video_memory?: number,
     device_id: number,
     driver_version: string,
