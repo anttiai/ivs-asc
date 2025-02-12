@@ -12,33 +12,51 @@ const DEFAULT_API_URL = 'https://ingest.contribute.live-video.net/api/v3/GetClie
 const DEFAULT_MAX_VIDEO_TRACKS = 5;
 const API_CALL_TIMEOUT_MS = 5000;
 
-const GPU_VENDOR_IDS = {
-    Nvidia: 4318,
+const GPU_VENDORS = {
+    Apple: 'Apple',
+    Nvidia: 'NVIDIA Corporation',
 }
 
 async function constructGpusArray(): Promise<GpuDescription[]> {
     const graphics = await si.graphics();
-    let gpuArr: GpuDescription[] = [];
 
-    graphics.controllers.forEach(controller => {
-        const vendorId = controller.vendorId ? parseInt(controller.vendorId, 16) : 0;
+    const gpuPromises = graphics.controllers.map(async (controller) => {
         let gpu: GpuDescription = {
-            device_id: controller.deviceId ? parseInt(controller.deviceId) : 0,
-            driver_version: '',
+            device_id: controller.deviceId ? parseInt(controller.deviceId, 16) : 0,
+            vendor_id: controller.vendorId ? parseInt(controller.vendorId, 16) : 0,
             model: controller.model,
-            vendor_id: vendorId
+            driver_version: ''
         };
 
-        // Vendor-specifc heuristic to find out GPU driver version
-        if (vendorId === GPU_VENDOR_IDS.Nvidia) {
-            exec("anvidia-smi --query-gpu=driver_version --format=csv,noheader").then(out => {
-                gpu.driver_version = out.stdout.trim();
-                gpuArr.push(gpu);
-            });
+        // Vendor-specifc heuristic to find out GPU driver version, device id, and vendor id
+        // With Nvidia, nvidia-smi is required as si.graphics() doesn't return sufficient information
+        if (controller.vendor === GPU_VENDORS.Nvidia) {
+            try {
+                const { stdout } = await exec("nvidia-smi --query-gpu=driver_version,pci.device_id --format=csv,noheader");
+                const [driverVersion, deviceAndVendorIdStr] = stdout.trim().split(", "); // e.g. 565.57.01, 0x27B810DE
+                const deviceAndVendorId = parseInt(deviceAndVendorIdStr, 16);
+                const deviceId = (deviceAndVendorId >>> 16) & 0xFFFF;
+                const vendorId = deviceAndVendorId & 0xFFFF;
+
+                console.log("driverVersion " + driverVersion + ", " + deviceAndVendorId + ", " + deviceId  + ", " + vendorId);
+
+                gpu.driver_version = driverVersion;
+                gpu.device_id = deviceId;
+                gpu.vendor_id = vendorId;
+            } catch (error) {
+                console.error("Error executing nvidia-smi:", error);
+            }
+            return gpu;
         }
-        gpuArr.push(gpu);
+
+        // With Mac, si.graphics() returns corrent vendorId and IVS accepts device_id=0
+        else if (controller.vendor === GPU_VENDORS.Apple) {
+            return gpu;
+        }
     });
-    return gpuArr;
+
+    const gpus = await Promise.all(gpuPromises);
+    return gpus.filter((gpu): gpu is GpuDescription => gpu !== undefined);
 }
 
 
