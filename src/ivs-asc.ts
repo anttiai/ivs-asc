@@ -35,14 +35,9 @@ async function constructGpusArray(): Promise<GpuDescription[]> {
                 const { stdout } = await exec("nvidia-smi --query-gpu=driver_version,pci.device_id --format=csv,noheader");
                 const [driverVersion, deviceAndVendorIdStr] = stdout.trim().split(", "); // e.g. 565.57.01, 0x27B810DE
                 const deviceAndVendorId = parseInt(deviceAndVendorIdStr, 16);
-                const deviceId = (deviceAndVendorId >>> 16) & 0xFFFF;
-                const vendorId = deviceAndVendorId & 0xFFFF;
-
-                console.log("driverVersion " + driverVersion + ", " + deviceAndVendorId + ", " + deviceId  + ", " + vendorId);
-
                 gpu.driver_version = driverVersion;
-                gpu.device_id = deviceId;
-                gpu.vendor_id = vendorId;
+                gpu.device_id = (deviceAndVendorId >>> 16) & 0xFFFF; // Upper 16 bits
+                gpu.vendor_id = deviceAndVendorId & 0xFFFF; // Lower 16 bits
             } catch (error) {
                 console.error("Error executing nvidia-smi:", error);
             }
