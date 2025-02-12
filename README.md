@@ -11,28 +11,24 @@ AWS documentation at [docs.aws.amazon.com](https://docs.aws.amazon.com/ivs/lates
 - Apple silicon: No additional software required
 - AMD: PRs welcome for device_id and vendor_id [heuristics](https://github.com/anttiai/ivs-asc/blob/main/src/ivs-asc.ts#L33)
 
+## Installation
+npm install ivs-asc --save
+
 ## Usage
 Construct stream configuration without sending it to IVS
 ```ts
-import { getClientConfiguration } from "./src";
-import { FetchOptions } from "./src/types/fetchOptions";
+import { getClientConfiguration, FetchOptions } from 'ivs-asc';
 
 const options: FetchOptions = {
     authKey: 'authkey',
-    video: {
-        width: 1920,
-        height: 1080,
-        fps: 60
-    }
+    video: { width: 1920, height: 1080, fps: 60 }
 }
 getClientConfiguration(options).then(console.log);
 ```
 
 Fetch optimal streaming configuration from IVS
 ```ts
-import { fetchStreamConfiguration } from "./src";
-import { FetchOptions } from "./src/types/fetchOptions";
-import { Response } from "./src/types/response";
+import { fetchStreamConfiguration, FetchOptions, Response } from 'ivs-asc';
 
 async function automaticStreamConfiguration() {
     const options: FetchOptions = {
@@ -48,7 +44,6 @@ async function automaticStreamConfiguration() {
     }
 
     const response: Response = await fetchStreamConfiguration(options);
-
     if (response.status?.result === 'error') {
         console.log(response.status.html_en_us);
     }
