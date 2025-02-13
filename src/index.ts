@@ -1,6 +1,6 @@
 import { FetchOptions } from './types/fetchOptions';
 import { ClientConfiguration, GpuDescription } from './types/clientConfiguration';
-import { Response } from './types/response';
+import { IVSResponse } from './types/ivsResponse';
 import * as si from 'systeminformation';
 import * as util from 'util';
 import * as child_process from 'child_process';
@@ -106,7 +106,7 @@ export async function getClientConfiguration(options: FetchOptions): Promise<Cli
     };
 }
 
-export async function fetchStreamConfiguration(options: FetchOptions): Promise<Response> {
+export async function fetchStreamConfiguration(options: FetchOptions): Promise<IVSResponse> {
     const clientConfiguration: ClientConfiguration = await getClientConfiguration(options);
 
     const resp = await fetch(options.apiUrl ? options.apiUrl : DEFAULT_API_URL, {
@@ -117,6 +117,9 @@ export async function fetchStreamConfiguration(options: FetchOptions): Promise<R
         },
         body: JSON.stringify(clientConfiguration)
     });
-    const response: Response = await resp.json();
-    return response;
+    return await resp.json() as IVSResponse;
 }
+
+export * from "./types/fetchOptions";
+export * from "./types/clientConfiguration";
+export * from "./types/ivsResponse";

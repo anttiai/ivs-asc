@@ -28,7 +28,7 @@ getClientConfiguration(options).then(console.log);
 
 Fetch optimal streaming configuration from IVS
 ```ts
-import { fetchStreamConfiguration, FetchOptions, Response } from 'ivs-asc';
+import { fetchStreamConfiguration, FetchOptions, IVSResponse } from 'ivs-asc';
 
 async function automaticStreamConfiguration() {
     const options: FetchOptions = {
@@ -43,7 +43,7 @@ async function automaticStreamConfiguration() {
         }
     }
 
-    const response: Response = await fetchStreamConfiguration(options);
+    const response: IVSResponse = await fetchStreamConfiguration(options);
     if (response.status?.result === 'error') {
         console.log(response.status.html_en_us);
     }

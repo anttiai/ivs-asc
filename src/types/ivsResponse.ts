@@ -39,7 +39,7 @@ interface IngestEndpoint {
 }
 
 
-export interface Response {
+export interface IVSResponse {
     audio_configurations: {
         live: AudioTrackConfiguration[],
         vod?: AudioTrackConfiguration[]
