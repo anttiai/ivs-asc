@@ -9,7 +9,7 @@ AWS documentation at [docs.aws.amazon.com](https://docs.aws.amazon.com/ivs/lates
 ## Supported GPUs
 - Nvidia: Requires *nvidia-smi*
 - Apple silicon: No additional software required
-- AMD: PRs welcome for device_id and vendor_id [heuristics](https://github.com/anttiai/ivs-asc/blob/main/src/ivs-asc.ts#L33)
+- AMD: PRs welcome for device_id and vendor_id [heuristics](https://github.com/anttiai/ivs-asc/blob/main/src/index.ts#L33)
 
 ## Installation
 npm install ivs-asc --save
