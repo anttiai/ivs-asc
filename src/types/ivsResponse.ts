@@ -1,4 +1,4 @@
-interface AudioTrackConfiguration {
+export interface AudioTrackConfiguration {
     channels: number,
     codec: string,
     settings: {
@@ -8,7 +8,7 @@ interface AudioTrackConfiguration {
 }
 
 
-interface EncoderConfiguration {
+export interface EncoderConfiguration {
     bitrate_interpolation_points: number[],
     framerate: {
         denominator: 1,
