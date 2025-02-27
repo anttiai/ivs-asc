@@ -55,7 +55,7 @@ async function constructGpusArray(): Promise<GpuDescription[]> {
 }
 
 
-export async function getClientConfiguration(options: FetchOptions): Promise<ClientConfiguration> {
+export async function createClientConfiguration(options: FetchOptions): Promise<ClientConfiguration> {
 
     const cpu = await si.cpu();
     const mem = await si.mem();
@@ -106,10 +106,8 @@ export async function getClientConfiguration(options: FetchOptions): Promise<Cli
     };
 }
 
-export async function fetchStreamConfiguration(options: FetchOptions): Promise<IVSResponse> {
-    const clientConfiguration: ClientConfiguration = await getClientConfiguration(options);
-
-    const resp = await fetch(options.apiUrl ? options.apiUrl : DEFAULT_API_URL, {
+export async function fetchStreamConfiguration(clientConfiguration: ClientConfiguration, restApiUrl?: string): Promise<IVSResponse> {
+    const resp = await fetch(restApiUrl ? restApiUrl : DEFAULT_API_URL, {
         signal: AbortSignal.timeout(API_CALL_TIMEOUT_MS),
         method: "POST",
         headers: {
