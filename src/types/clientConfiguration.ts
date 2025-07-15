@@ -8,6 +8,16 @@ export interface GpuDescription {
     vendor_id: number // decimal
 }
 
+export interface Canvas {
+    canvas_height: number,
+    canvas_width: number,
+    framerate: {
+        denominator: 1,
+        numerator: 24 | 25 | 30 | 48 | 50 | 60
+    },
+    height: number,
+    width: number
+}
 
 export interface ClientConfiguration {
     authentication: string,
@@ -44,19 +54,12 @@ export interface ClientConfiguration {
         version: string
     },
     preferences?: {
-        canvas_height: number,
-        canvas_width: number,
         composition_gpu_index?: number,
-        framerate: {
-            denominator: 1,
-            numerator: 24 | 25 | 30 | 48 | 50 | 60
-        },
-        height: number,
         maximum_streaming_bandwidth?: number,
         maximum_resolution?: string,
         maximum_video_tracks?: number,
         vod_track_audio?: boolean,
-        width: number
+        canvases: Canvas[]
     },
     service: string,
     schema_version: string,

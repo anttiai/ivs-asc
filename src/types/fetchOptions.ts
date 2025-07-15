@@ -1,3 +1,5 @@
+import { Canvas } from "./clientConfiguration"
+
 export interface FetchOptions {
     authKey: string,
     apiUrl?: string,
@@ -6,11 +8,9 @@ export interface FetchOptions {
         version: string
     },
     video: {
-        width: number,
-        height: number,
-        fps: 24 | 25 | 30 | 48 | 50 | 60,
         maxBitrateKbps?: number,
         maxTracks?: number
         supportedCodecs?: string[],
-    }
+    },
+    canvases: Canvas[]
 }
