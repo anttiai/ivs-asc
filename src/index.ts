@@ -7,7 +7,7 @@ import * as child_process from 'child_process';
 const exec = util.promisify(child_process.exec);
 
 const SERVICE = 'IVS';
-const SCHEMA_VERSION = '2024-06-04';
+const SCHEMA_VERSION = '2025-01-25';
 const DEFAULT_API_URL = 'https://ingest.contribute.live-video.net/api/v3/GetClientConfiguration';
 const DEFAULT_MAX_VIDEO_TRACKS = 5;
 const API_CALL_TIMEOUT_MS = 5000;
@@ -66,7 +66,7 @@ export async function createClientConfiguration(options: FetchOptions): Promise<
         "authentication": options.authKey,
         "client": {
             "name": options.client ? options.client.name : 'github.com/anttiai/ivs-asc',
-            "version": options.client ? options.client.version : '0.1.0',
+            "version": options.client ? options.client.version : '0.2.0',
             "supported_codecs": options.video.supportedCodecs
         },
         "capabilities": {
@@ -88,15 +88,8 @@ export async function createClientConfiguration(options: FetchOptions): Promise<
             }
         },
         "preferences": {
-            "canvas_height": options.video.height,
-            "canvas_width": options.video.width,
-            "framerate": {
-                "denominator": 1,
-                "numerator": options.video.fps
-            },
-            "height": options.video.height,
+            "canvases": options.canvases,
             "vod_track_audio": false,
-            "width": options.video.width,
             "maximum_video_tracks": options.video.maxTracks ? options.video.maxTracks : DEFAULT_MAX_VIDEO_TRACKS,
             "maximum_streaming_bandwidth": options.video.maxBitrateKbps
         },

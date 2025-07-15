@@ -12,7 +12,7 @@ AWS documentation at [docs.aws.amazon.com](https://docs.aws.amazon.com/ivs/lates
 - AMD: PRs welcome for device_id and vendor_id [heuristics](https://github.com/anttiai/ivs-asc/blob/main/src/index.ts#L33)
 
 ## Installation
-npm install ivs-asc --save
+npm install ivs-asc
 
 ## Usage
 Create and print out the client configuration
@@ -21,26 +21,47 @@ import { createClientConfiguration, FetchOptions } from 'ivs-asc';
 
 const options: FetchOptions = {
     authKey: 'authkey',
-    video: { width: 1920, height: 1080, fps: 60 }
+    video: {},
+    canvases: [
+        {
+            canvas_height: 1080,
+            canvas_width: 1920,
+            framerate: {
+                denominator: 1,
+                numerator: 60
+            },
+            height: 1080,
+            width: 1920
+        }
+    ]
 }
 createClientConfiguration(options).then(console.log);
 ```
 
 Fetch optimal streaming configuration from IVS
 ```ts
-import { fetchStreamConfiguration, FetchOptions, IVSResponse } from 'ivs-asc';
+import { createClientConfiguration, fetchStreamConfiguration, FetchOptions, IVSResponse } from 'ivs-asc';
 
 async function automaticStreamConfiguration() {
     const options: FetchOptions = {
         authKey: 'authkey',
         video: {
-            width: 1920,
-            height: 1080,
-            fps: 60,
             maxBitrateKbps: 4000,
             maxTracks: 3,
             supportedCodecs: ["h264", "h265", "av1"]
-        }
+        },
+        canvases: [
+            {
+                canvas_height: 1080,
+                canvas_width: 1920,
+                framerate: {
+                    denominator: 1,
+                    numerator: 60
+                },
+                height: 1080,
+                width: 1920
+            }
+        ]
     }
 
     const clientConfiguration = await createClientConfiguration(options);
@@ -54,3 +75,5 @@ async function automaticStreamConfiguration() {
 }
 automaticStreamConfiguration();
 ```
+
+Special thanks to [Streamrun](https://streamrun.com), a cloud-based streaming server that offers features beyond what can be run on a single streaming device.

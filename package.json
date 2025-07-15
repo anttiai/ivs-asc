@@ -1,6 +1,6 @@
 {
   "name": "ivs-asc",
-  "version": "0.1.4",
+  "version": "0.2.0",
   "description": "Automatic Stream Configuration for AWS IVS",
   "author": "Antti Ala-Ilkka <antti@instereo.fi>",
   "license": "MIT",
@@ -22,10 +22,10 @@
   },
   "homepage": "https://github.com/anttiai/ivs-asc#readme",
   "devDependencies": {
-    "@types/node": "^22.15.3",
+    "@types/node": "^24.0.13",
     "typescript": "^5.8.3"
   },
   "dependencies": {
-    "systeminformation": "^5.25.11"
+    "systeminformation": "^5.27.7"
   }
 }
