@@ -10,6 +10,7 @@ export interface AudioTrackConfiguration {
 
 export interface EncoderConfiguration {
     bitrate_interpolation_points: number[],
+    canvas_index: number,
     framerate: {
         denominator: 1,
         numerator: 24 | 25 | 30 | 48 | 50 | 60
@@ -17,13 +18,14 @@ export interface EncoderConfiguration {
     gpu_scale_type: string,
     height: number,
     settings: {
+        adaptive_quantization?: boolean,
         bf?: number,
         bitrate: number,
         keyint_sec: number,
         lookahead?: boolean,
-        preset2: string,
+        multipass: string,
+        preset: string,
         profile: string,
-        psycho_aq?: boolean,
         rate_control: string,
         tune?: string
     },
