@@ -1,6 +1,6 @@
 {
   "name": "ivs-asc",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "Automatic Stream Configuration for AWS IVS",
   "author": "Antti Ala-Ilkka <antti@instereo.fi>",
   "license": "MIT",
