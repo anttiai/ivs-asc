@@ -66,7 +66,7 @@ export async function createClientConfiguration(options: FetchOptions): Promise<
         "authentication": options.authKey,
         "client": {
             "name": options.client ? options.client.name : 'github.com/anttiai/ivs-asc',
-            "version": options.client ? options.client.version : '0.2.2',
+            "version": options.client ? options.client.version : '0.2.3',
             "supported_codecs": options.video.supportedCodecs
         },
         "capabilities": {
@@ -89,7 +89,7 @@ export async function createClientConfiguration(options: FetchOptions): Promise<
         },
         "preferences": {
             "canvases": options.canvases,
-            "vod_track_audio": false,
+            "vod_track_audio": options.preferences && options.preferences.vod_track_audio ? options.preferences.vod_track_audio : false,
             "maximum_video_tracks": options.video.maxTracks ? options.video.maxTracks : DEFAULT_MAX_VIDEO_TRACKS,
             "maximum_streaming_bandwidth": options.video.maxBitrateKbps
         },

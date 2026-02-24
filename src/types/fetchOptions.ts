@@ -12,5 +12,8 @@ export interface FetchOptions {
         maxTracks?: number
         supportedCodecs?: string[],
     },
+    preferences?: {
+        vod_track_audio?: boolean
+    },
     canvases: Canvas[]
 }
