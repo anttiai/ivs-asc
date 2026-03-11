@@ -26,6 +26,6 @@
     "typescript": "^5.9.2"
   },
   "dependencies": {
-    "systeminformation": "^5.27.10"
+    "systeminformation": "^5.31.0"
   }
 }
