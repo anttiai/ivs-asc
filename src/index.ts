@@ -66,7 +66,7 @@ export async function createClientConfiguration(options: FetchOptions): Promise<
         "authentication": options.authKey,
         "client": {
             "name": options.client ? options.client.name : 'github.com/anttiai/ivs-asc',
-            "version": options.client ? options.client.version : '0.2.3',
+            "version": options.client ? options.client.version : '0.2.4',
             "supported_codecs": options.video.supportedCodecs
         },
         "capabilities": {
