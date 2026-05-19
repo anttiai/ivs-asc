@@ -22,10 +22,10 @@
   },
   "homepage": "https://github.com/anttiai/ivs-asc#readme",
   "devDependencies": {
-    "@types/node": "^24.5.2",
-    "typescript": "^5.9.2"
+    "@types/node": "^24.12.4",
+    "typescript": "^5.9.3"
   },
   "dependencies": {
-    "systeminformation": "^5.31.0"
+    "systeminformation": "^5.31.6"
   }
 }
